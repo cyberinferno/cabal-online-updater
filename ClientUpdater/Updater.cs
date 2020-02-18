@@ -1,13 +1,13 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
-using System.Drawing;
-using System.Windows.Forms;
-using System.IO;
-using System.Security.Cryptography;
-using System.Diagnostics;
-using System.Net;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Net;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Windows.Forms;
 
 namespace ClientUpdater
 {
@@ -18,7 +18,7 @@ namespace ClientUpdater
         public string Patch = "Patch.ini";
         public string currentDirectory = Directory.GetCurrentDirectory();
         public string mainFile = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "CabalMain.exe";
-        public string updatesDirectory = Directory.GetCurrentDirectory() +  Path.DirectorySeparatorChar + "updates";
+        public string updatesDirectory = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "updates";
         public WebClient webClient;
         public Stopwatch sw = new Stopwatch();
         public bool isBulkDownload = false;
@@ -41,10 +41,13 @@ namespace ClientUpdater
         }
 
         #region Check For Instance
+
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
+
         [DllImport("user32.dll")]
         private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
         [DllImport("user32.dll")]
         private static extern bool IsIconic(IntPtr hWnd);
 
@@ -167,16 +170,18 @@ namespace ClientUpdater
                 {
                     continue;
                 }
-                Invoke((MethodInvoker)delegate {
+                Invoke((MethodInvoker)delegate
+                {
                     SpeedLable.Text = "";
                     percentLable.Text = "";
-                    StatusLable.Text = "Checking " + totalFilesProcessed + "/"  + totalFilesToBeProcessed + " files...";
+                    StatusLable.Text = "Checking " + totalFilesProcessed + "/" + totalFilesToBeProcessed + " files...";
                 });
                 var localPathToCheck = currentDirectory + fileDataArray[1];
                 var pathToDownload = updatesDirectory + fileDataArray[1] + ".7z";
                 if (!File.Exists(currentDirectory + fileDataArray[1]) || GetFileMD5Hash(currentDirectory + fileDataArray[1]) != fileDataArray[0])
                 {
-                    Invoke((MethodInvoker)delegate {
+                    Invoke((MethodInvoker)delegate
+                    {
                         StatusLable.Text = "Downloading " + FileNameFromPath(localPathToCheck);
                     });
                     Directory.CreateDirectory(Path.GetDirectoryName(pathToDownload));
@@ -194,7 +199,7 @@ namespace ClientUpdater
                         Int64 fileSize = webResponse.ContentLength;
                         // Start the stopwatch which we will be using to calculate the download speed
                         sw.Start();
-                        // Open the URL for download 
+                        // Open the URL for download
                         strResponse = webResponse.GetResponseStream();
                         // Create a new file stream where we will be saving the data (local drive)
                         // Read from response and write to file
@@ -209,7 +214,8 @@ namespace ClientUpdater
                         {
                             fileStream.Write(downBuffer, 0, bytesSize);
                             // Invoke a method to update form's label and progress bar
-                            Invoke((MethodInvoker)delegate {
+                            Invoke((MethodInvoker)delegate
+                            {
                                 // Calculate the download progress in percentages
                                 var PercentProgress = Convert.ToInt32((fileStream.Length * 100) / fileSize);
                                 // Make progress on the progress bar
@@ -290,7 +296,6 @@ namespace ClientUpdater
             this.formStartX = this.Location.X;
             this.formStartY = this.Location.Y;
             FormDragging = true;
-
         }
 
         private void Updater_MouseMove(object sender, MouseEventArgs e)
@@ -308,7 +313,7 @@ namespace ClientUpdater
         {
             FormDragging = false;
         }
-        
+
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(WebHost);
@@ -348,7 +353,8 @@ namespace ClientUpdater
         {
             Process.Start(WebHost + "/news");
         }
-        #endregion
+
+        #endregion Check For Instance
 
         private void ResetUIElements()
         {
@@ -389,7 +395,7 @@ namespace ClientUpdater
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Cabal Online Updater", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _ = MessageBox.Show(ex.Message, "Cabal Online Updater", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

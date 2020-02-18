@@ -192,7 +192,8 @@ namespace PatchGenerator
                     var relativePath = fileName.Replace(inputPath, "");
                     var remotePath = relativePath.Replace(@"\", "/") + ".7z";
                     patchFileWriter.Write(hash + "|" + relativePath + "|" + remotePath + ";");
-                    Invoke((MethodInvoker)delegate {
+                    Invoke((MethodInvoker)delegate
+                    {
                         outputLabel.Text = "Processing " + relativePath.TrimStart('\\');
                     });
                     CompressFileLZMA(fileName, fileName.Replace(inputPath, outputPath) + ".7z");
